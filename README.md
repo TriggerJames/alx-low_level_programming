@@ -1,3 +1,3 @@
-# Alx Low Level Programming
+# Alx Low-Level Programming
 
 * 0x00 C
