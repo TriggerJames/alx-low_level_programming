@@ -1,5 +1,4 @@
 #include "search_algos.h"
-
 /**
  * linear_search - Searches a value in an array using a linear search.
  * @array: The array to search in.
