@@ -1,53 +1,51 @@
 #include "lists.h"
 
 /**
- * insert_nodeint_at_index - a function that inserts a new node at
- *                           a given position
- *
- * @head: pointer to the first node of the list
- * @idx: is the index of the list where the new node should be added
- * @n: element to add to the new node
- *
- * Return: NULL if anything fails or the address of the new node
-*/
-listint_t *insert_nodeint_at_index(listint_t **head, unsigned int idx, int n)
+* insert_nodeint_at_index - inserts new node
+* @head: pointer to head
+* @index: node to insert
+* @n: data of the new node
+* Return:address of the new node, or NULL
+**/
+listint_t *insert_nodeint_at_index(listint_t **head, unsigned int index, int n)
 {
-	listint_t *new_node, *current;
-	unsigned int index;
+	listint_t *var_lst_buffer, *var_lst_prev_node, *var_lst_next_node;
+	unsigned int i;
 
-	current = *head; /*place first node at current*/
-
-	new_node = malloc(sizeof(listint_t));
-	if ((*head == NULL && idx != 0) || new_node == NULL)
+	if (head == NULL)
 		return (NULL);
+	var_lst_next_node = malloc(sizeof(listint_t));
+	if (var_lst_next_node == NULL)
+		return (NULL);
+	(*var_lst_next_node).n = n;
+	(*var_lst_next_node).next = NULL;
 
-	new_node->n = n; /* add our element to the new node*/
-
-	/*iterate list to node position idx - 2*/
-	for (index = 0; head != NULL && index < idx - 1; index++)
+	if (index == 0)
 	{
-		current = current->next;
-		if (current == NULL)
-			return (NULL);
+		(*var_lst_next_node).next = *head;
+		*head = var_lst_next_node;
+		return (var_lst_next_node);
 	}
-
-	if (idx == 0) /*if the index for new node is 0*/
+	i = 1;
+	var_lst_prev_node = *head;
+	var_lst_buffer = (*(*head)).next;
+	while (var_lst_buffer != NULL)
 	{
-		/*first node will be moved to second node*/
-		new_node->next = *head;
-		/*new node will be placed as the first node*/
-		*head = new_node;
+		if (i == index)
+		{
+			(*var_lst_prev_node).next = var_lst_next_node;
+			(*var_lst_next_node).next = var_lst_buffer;
+			return (var_lst_next_node);
+		}
+		var_lst_prev_node = var_lst_buffer;
+		var_lst_buffer = (*var_lst_buffer).next;
+		i++;
 	}
-	else if (current->next) /*if index where to add our new node is not 0*/
+	if (var_lst_buffer == NULL && i == index)
 	{
-		new_node->next = current->next; /*place current node after new node*/
-		current->next = new_node;/*set the new node at index idx*/
+		(*var_lst_prev_node).next = var_lst_next_node;
+		return (var_lst_next_node);
 	}
-	else /*if node position is not present in the list*/
-	{
-		new_node->next = NULL;/*set next addr as NULL, indicates last node*/
-		current->next = new_node;/*set the new node at the last position in list*/
-	}
-
-	return (new_node);
+	free(var_lst_next_node); /* coud not find a place */
+	return (NULL);
 }
