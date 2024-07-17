@@ -31,4 +31,3 @@ int main(void)
 	free_list(list);
 	return (EXIT_SUCCESS);
 }
-
